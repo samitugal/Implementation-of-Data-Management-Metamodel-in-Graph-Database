@@ -206,6 +206,7 @@ class DB:
         tmp = self.readDataFromDB(queryForColumns).values
         return tmp
     
+
     def check_only_table_names_in_database(self):
         queryForTables = """SELECT TABLE_NAME
         FROM INFORMATION_SCHEMA.TABLES x
@@ -398,6 +399,7 @@ class DB:
         
 if __name__ == "__main__":
     db = DB('SQL SERVER','DESKTOP-7P8DAD8','TestDB')
+    print("")
     test = db.searchDatabases()
     # test = db.create_new_foreign_key_relation('SECTION','Section_identifier',"GRADE_REPORT","Section_identifier")
     
