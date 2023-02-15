@@ -1,0 +1,14 @@
+<div class="container">
+    <ul>
+        {% for node in path %}
+            <li>
+                <div  class = "nodes-block" style="display: flex;">
+                    <p>{{node.node_name}}</p>
+                    <p>(</p>
+                    <p>{{node.node_type}}</p>
+                    <p>)</p>
+                </div>                
+            </li>          
+        {% endfor %}
+     </ul>
+</div>

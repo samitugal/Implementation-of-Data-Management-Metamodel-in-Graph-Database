@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potential Relations Service</title>
+</head>
+
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
+
+<body>
+    <div class="container">
+        <h2>Potential Relations</h2>
+        <table>
+            <tr>
+              <th>Parent Table Name</th>
+              <th>Parent Column Name</th>
+              <th>Child Table Name</th>
+              <th>Child Column Name</th>
+              <th>Similarity Point</th>
+              <th>Advice</th>
+            </tr>
+    
+            {% for item in items %}
+            <tr>
+                <td>{{item.parent_table_name}}</td>
+                <td>{{item.parent_column_name}}</td>
+                <td>{{item.child_table_name}}</td>
+                <td>{{item.child_column_name}}</td>
+                <td>{{item.similarity_point}}</td>
+                <td>{{item.advice}}</td>
+              </tr>
+            {% endfor %}
+        
+        </table>
+    </div>
+</body>
+</html>
+

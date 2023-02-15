@@ -1,0 +1,17 @@
+<div class="container">
+    <ul>
+        {% for node in nodes %}
+            <li>
+                <div  class = "nodes-block" style="display: flex;">
+                    <p>{{node.NodeName}}</p>
+                    <p> - </p>
+                    <p>{{node.TableName}}</p>
+                    <p> - </p>
+                    <p>{{node.DatabaseName}}</p>
+                    <p> - </p>
+                    <p>{{node.DataType}}</p>
+                </div>                
+            </li>          
+        {% endfor %}
+     </ul>
+</div>
