@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from BitirmeTeziSourceCode.queryOnMetadataModel import Services
-from .forms import find_path_algorithm,  redis_service_keyword_algorithm, referential_integrity_service_keyword_algorithm
+from .forms import find_path_algorithm,  redis_service_keyword_algorithm, referential_integrity_service_keyword_algorithm, metadata_model_algorithm
 
 import sys
 sys.path.append(".")
@@ -71,6 +71,28 @@ def referential_integrity_service_processing(request):
         
     return render(request , "referential_integrity_service_processing.html", {'items':items})
 
+
+### GRAPH MAP SERVICE
+
+def graph_map_service(request):
+
+    algorithm = referential_integrity_service_keyword_algorithm()
+    return render(request, "graph_map_service.html" , {'algorithm': algorithm})
+
+
+def graph_map_processing(request):
+
+    if request.method == 'POST':
+        form = metadata_model_algorithm()
+        service = Services()
+
+        # if form is valid kontrolü gelebilir
+        database_name = request.POST['database_name']
+        service.get_metadata_model(database_name)
+
+        items = service.get_all_nodes_infos()
+        
+    return render(request , "graph_map_processing.html", {'items':items})
 
 
 

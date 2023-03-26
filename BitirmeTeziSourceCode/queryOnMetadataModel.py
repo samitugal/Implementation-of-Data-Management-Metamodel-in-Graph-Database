@@ -1,6 +1,7 @@
 from Neo4jConnection import App
 from Redis_Connection import Redis
 from ReferentialIntegrity import RI
+from MetadataModel import MetadataModel
 
 
 class Services:
@@ -145,6 +146,7 @@ class Services:
         potential_relations_dct = self.dataframe_to_dictionary(potential_relations_df)
         return potential_relations_dct
     
+
     def referantial_integrity_check_for_existing(self, database_name):
         ri = RI(database_name)
         existing_relations_df = ri.find_system_improvements_existing_relations()
@@ -152,10 +154,65 @@ class Services:
         existing_relations_dct = self.dataframe_to_dictionary(existing_relations_df)
         return existing_relations_dct
     
+    def get_metadata_model(self, metadata_model_name):
+        metadataModel = MetadataModel(metadata_model_name)
+        metadataModel.printDatabase()
+
+    def get_all_nodes_infos(self):
+        entity_node_properties = self.app.get_entity_node_infos()
+        attribute_node_properties = self.app.get_attribute_node_infos()
+        columns_of_relation_properties = self.app.get_columns_of_relation_infos()
+
+        def _convert_node_infos_to_json(liste,node_color, node_size, node_size_edge, node_color_edge):
+            main_dct = []
+            for item in range(0,len(liste[0])):
+                dct = {
+                    "node_id": liste[1][item],
+                    "node_name": liste[0][item],
+                    "node_color": node_color,
+                    "node_size": node_size,
+                    "node_size_edge": node_size_edge,
+                    "node_color_edge": node_color_edge
+                }
+                main_dct.append(dct)
+
+            return main_dct
+        
+        def _convert_relation_infos_to_json(liste,weight, edge_weight, edge_width):   
+            main_dct = []
+            for item in range(0,len(liste[0])):
+                dct = {
+                "weight":weight,
+                "edge_weight": edge_weight,
+                "edge_width": edge_width,
+                "source_label": liste[0][item],
+                "target_label": liste[1][item],
+                "source": liste[2][item],
+                "target": liste[3][item]
+                }
+                main_dct.append(dct)
+
+            return main_dct
+        
+        
+        
+        entity_node_json_list = _convert_node_infos_to_json(entity_node_properties,"#000080","10","0.10000000000000009","#000000")   
+        attribute_node_json_list = _convert_node_infos_to_json(attribute_node_properties,"#000080","10","0.10000000000000009","#000000")
+        relation_json_list = _convert_relation_infos_to_json(columns_of_relation_properties , 0.64, 0.64, 3.1870503597122304 )
+
+        for item in entity_node_json_list:
+            attribute_node_json_list.append(item)
+
+        graph = {"links":relation_json_list,
+                 "nodes":attribute_node_json_list}
+        
+        return graph
+    
 
         
 if __name__ == "__main__":
     service = Services()
-    test = service.referantial_integrity_check_for_potential("TestDB")
+    test = service.get_all_nodes_infos()
+    print(test)
 
 

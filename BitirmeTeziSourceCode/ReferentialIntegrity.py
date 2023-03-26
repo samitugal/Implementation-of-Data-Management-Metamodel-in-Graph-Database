@@ -229,8 +229,8 @@ class RI:
 
 if __name__ == '__main__':
     ri = RI("TestDB")
-    # test = ri.find_system_improvements_existing_relations()
-    test2 = ri.find_system_improvements_potential_relations()
+    test = ri.find_system_improvements_existing_relations()
+    # test2 = ri.find_system_improvements_potential_relations()
 
 
     

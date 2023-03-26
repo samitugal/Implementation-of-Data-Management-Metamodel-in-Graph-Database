@@ -11,3 +11,6 @@ class redis_service_keyword_algorithm(forms.Form):
     
 class referential_integrity_service_keyword_algorithm(forms.Form):
     database_name = forms.CharField(label = 'Database Name' , max_length = 100)
+
+class metadata_model_algorithm(forms.Form):
+    metadata_model_name = forms.CharField(label = 'Database Name' , max_length = 100)

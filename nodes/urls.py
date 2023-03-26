@@ -23,7 +23,12 @@ urlpatterns = [
     # Referetial Integrity URL's
     path("referential_integrity_service/", views.referential_integrity_service),
     path("referential_integrity_service/processing/" , views.referential_integrity_service_processing , 
-    name = "referential_integrity_service")
+    name = "referential_integrity_service"),
+
+    # Graph Map URL's
+    path("graph_map_service/", views.graph_map_service),
+    path("graph_map_service/processing/" , views.graph_map_processing , 
+    name = "graph_map_service")
     
 
 ]

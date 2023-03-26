@@ -562,12 +562,57 @@ class App:
         
     @staticmethod
     def _get_all_attribute_names_and_types(tx):
-        query = 'MATCH (a:Attribute) RETURN COLLECT(a.name)'
-
+        query = 'MATCH (a:Attribute) RETURN COLLECT(a.name)' 
+        
         result = tx.run(query)
         
         for row in result: return row[0]
 
+#%% Get Entity Node Informations:
+
+    def get_entity_node_infos(self):
+        with self.driver.session(database="neo4j") as session:
+            result = session.execute_read(self._get_entity_node_infos)
+            return result
+        
+    @staticmethod
+    def _get_entity_node_infos(tx):
+        query = 'MATCH (n:Entity) RETURN COLLECT(n.name), COLLECT(ID(n))'
+
+        result = tx.run(query)
+        
+        for row in result: 
+            return row
+
+#%% Get Attribute Node Informations:
+
+    def get_attribute_node_infos(self):
+        with self.driver.session(database="neo4j") as session:
+            result = session.execute_read(self._get_attribute_node_infos)
+            return result
+        
+    @staticmethod
+    def _get_attribute_node_infos(tx):
+        query = 'MATCH (n:Attribute) RETURN COLLECT(n.name), COLLECT(ID(n))'
+
+        result = tx.run(query)
+        
+        for row in result: return row
+
+#%% Get Columns Of Relation Informations:
+
+    def get_columns_of_relation_infos(self):
+        with self.driver.session(database="neo4j") as session:
+            result = session.execute_read(self._get_columns_of_relation_infos)
+            return result
+        
+    @staticmethod
+    def _get_columns_of_relation_infos(tx):
+        query = 'MATCH (n)-[m:COLUMNS_OF]->(k) RETURN COLLECT(n.name),COLLECT(k.name),COLLECT(ID(n)),COLLECT(ID(k)) '
+
+        result = tx.run(query)
+        
+        for row in result: return row 
 
 
 

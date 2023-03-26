@@ -150,7 +150,7 @@ class MetadataModel:
 
                              
 if __name__ == "__main__":
-    metadataModel = MetadataModel("TestDB")
+    metadataModel = MetadataModel("Northwind")
     metadataModel.printDatabase()
 
     
