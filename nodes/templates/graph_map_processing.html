@@ -271,31 +271,15 @@
           node.enter().insert("circle", ".cursor").attr("class", "node").attr("r", 5).call(force.drag);
           force.start();
         }
-      }
+      };
 
-
-
-      graph = {"links": [
-      {"weight":3.28, "edge_weight": 3.28, "edge_width": 2.537769784172662, "source_label": "Course_name", "target_label": "COURSE", "source": 1, "target": 0}, 
-      {"weight":0.45, "edge_weight": 0.45, "edge_width": 2.537769784172662, "source_label": "Course_number", "target_label": "COURSE", "source": 2, "target": 0}, 
-      {"weight":0.5, "edge_weight": 0.5, "edge_width": 2.537769784172662, "source_label": "Credit_hours", "target_label": "COURSE", "source": 3, "target": 0}, 
-      {"weight":0.64, "edge_weight": 0.64, "edge_width": 2.537769784172662, "source_label": "Department", "target_label": "COURSE", "source": 4, "target": 0}, 
-     ], 
-      
-      "nodes": [
-      {"node_name": "COURSE", "node_color": "#FBBC04", "node_size": "15", "node_size_edge": "0.10000000000000009", "node_color_edge": "#000000"},
-      {"node_name": "Course_name", "node_color": "#2985FB", "node_size": "10", "node_size_edge": "0.10000000000000009", "node_color_edge": "#000000"}, 
-      {"node_name": "Course_number", "node_color": "#2985FB", "node_size": "10", "node_size_edge": "0.10000000000000009", "node_color_edge": "#000000"}, 
-      {"node_name": "Credit_hours", "node_color": "#2985FB", "node_size": "10", "node_size_edge": "0.10000000000000009", "node_color_edge": "#000000"}, 
-      {"node_name": "Department", "node_color": "#2985FB", "node_size": "10", "node_size_edge": "0.10000000000000009", "node_color_edge": "#000000"} 
-      ]}
-  
+      graph = JSON.parse('{{ items|escapejs }}');
 
     window.addEventListener('DOMContentLoaded', function () {
 
 			d3graphscript({
-                width: 1500,
-                height: 800,
+                width: 2000,
+                height: 1250,
                 charge: -250,
                 distance: 30,
                 directed: false,

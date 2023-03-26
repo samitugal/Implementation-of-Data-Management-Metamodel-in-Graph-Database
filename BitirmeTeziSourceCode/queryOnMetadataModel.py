@@ -2,6 +2,7 @@ from Neo4jConnection import App
 from Redis_Connection import Redis
 from ReferentialIntegrity import RI
 from MetadataModel import MetadataModel
+import json
 
 
 class Services:
@@ -159,54 +160,107 @@ class Services:
         metadataModel.printDatabase()
 
     def get_all_nodes_infos(self):
-        entity_node_properties = self.app.get_entity_node_infos()
-        attribute_node_properties = self.app.get_attribute_node_infos()
-        columns_of_relation_properties = self.app.get_columns_of_relation_infos()
+        entity_names = self.app.get_all_entity_names()
+        id = 0 
+        nodes = []
+        links = []
+        entity_node_numbers = []
+        attribute_node_numbers = []
 
-        def _convert_node_infos_to_json(liste,node_color, node_size, node_size_edge, node_color_edge):
-            main_dct = []
-            for item in range(0,len(liste[0])):
-                dct = {
-                    "node_id": liste[1][item],
-                    "node_name": liste[0][item],
-                    "node_color": node_color,
-                    "node_size": node_size,
-                    "node_size_edge": node_size_edge,
-                    "node_color_edge": node_color_edge
+        for entity in entity_names:
+            attributes_of_entity = self.app.get_attributes_of_entity(entity)
+            entity_id = id
+            entity_node_numbers.append(entity_id)
+            entity_dct = {
+                "node_name": entity, 
+                 "node_color": "#428BCA", 
+                 "node_size": "15", 
+                 "node_size_edge": "0.10000000000000009", 
+                 "node_color_edge": "#000000"
+            }
+            nodes.append(entity_dct)
+            id += 1
+
+            for attribute in attributes_of_entity:
+                att_dct = {
+                    "node_name": attribute, 
+                    "node_color": "#FBBC04", 
+                    "node_size": "12", 
+                    "node_size_edge": "0.10000000000000009", 
+                    "node_color_edge": "#000000"
                 }
-                main_dct.append(dct)
+                nodes.append(att_dct)
 
-            return main_dct
+                links_dct = {
+                    "weight":3.28, 
+                     "edge_weight": 3.28, 
+                     "edge_width": 2.537769784172662, 
+                     "source_label": attribute, 
+                     "target_label": entity, 
+                     "source": id, 
+                     "target": entity_id
+                    }
+                attribute_node_numbers.append(id)
+                id +=1
+                links.append(links_dct)
         
-        def _convert_relation_infos_to_json(liste,weight, edge_weight, edge_width):   
-            main_dct = []
-            for item in range(0,len(liste[0])):
-                dct = {
-                "weight":weight,
-                "edge_weight": edge_weight,
-                "edge_width": edge_width,
-                "source_label": liste[0][item],
-                "target_label": liste[1][item],
-                "source": liste[2][item],
-                "target": liste[3][item]
-                }
-                main_dct.append(dct)
+        entity_repository_object = {
+                "node_name": "Entity Repository", 
+                 "node_color": "#2B4EFF", 
+                 "node_size": "20", 
+                 "node_size_edge": "0.10000000000000009", 
+                 "node_color_edge": "#000000"
+            }
+        nodes.append(entity_repository_object)
 
-            return main_dct
-        
-        
-        
-        entity_node_json_list = _convert_node_infos_to_json(entity_node_properties,"#000080","10","0.10000000000000009","#000000")   
-        attribute_node_json_list = _convert_node_infos_to_json(attribute_node_properties,"#000080","10","0.10000000000000009","#000000")
-        relation_json_list = _convert_relation_infos_to_json(columns_of_relation_properties , 0.64, 0.64, 3.1870503597122304 )
 
-        for item in entity_node_json_list:
-            attribute_node_json_list.append(item)
+        for entity_node_number in entity_node_numbers:
+                links_dct = {
+                    "weight":3.28, 
+                     "edge_weight": 3.28, 
+                     "edge_width": 2.537769784172662, 
+                     "source_label": attribute, 
+                     "target_label": entity, 
+                     "source": id, 
+                     "target": entity_node_number
+                    }
+                
+                links.append(links_dct)
+                
+        id += 1
 
-        graph = {"links":relation_json_list,
-                 "nodes":attribute_node_json_list}
-        
-        return graph
+        # attribute_repository_object = {
+        #         "node_name": "Attribute Repository", 
+        #          "node_color": "#FF0000", 
+        #          "node_size": "20", 
+        #          "node_size_edge": "0.10000000000000009", 
+        #          "node_color_edge": "#000000"
+        #     }
+        # nodes.append(attribute_repository_object)
+
+        # for attribute_node_number in attribute_node_numbers:
+        #         links_dct = {
+        #             "weight":3.28, 
+        #              "edge_weight": 3.28, 
+        #              "edge_width": 2.537769784172662, 
+        #              "source_label": attribute, 
+        #              "target_label": entity, 
+        #              "source": id, 
+        #              "target": attribute_node_number
+        #             }
+                
+        #         links.append(links_dct)
+                
+        # id += 1
+
+
+        graph = {
+            "links":links,
+            "nodes":nodes
+        }
+
+
+        return json.dumps(graph)
     
 
         
@@ -214,5 +268,7 @@ if __name__ == "__main__":
     service = Services()
     test = service.get_all_nodes_infos()
     print(test)
+
+
 
 

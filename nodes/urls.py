@@ -28,7 +28,7 @@ urlpatterns = [
     # Graph Map URL's
     path("graph_map_service/", views.graph_map_service),
     path("graph_map_service/processing/" , views.graph_map_processing , 
-    name = "graph_map_service")
-    
+    name = "graph_map_service"),
+
 
 ]

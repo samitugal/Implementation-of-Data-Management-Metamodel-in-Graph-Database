@@ -568,53 +568,37 @@ class App:
         
         for row in result: return row[0]
 
-#%% Get Entity Node Informations:
 
-    def get_entity_node_infos(self):
+
+#%% Get All Entity Names 
+    
+    def get_all_entity_names(self):
         with self.driver.session(database="neo4j") as session:
-            result = session.execute_read(self._get_entity_node_infos)
+            result = session.execute_read(self._get_all_entity_names)
             return result
         
     @staticmethod
-    def _get_entity_node_infos(tx):
-        query = 'MATCH (n:Entity) RETURN COLLECT(n.name), COLLECT(ID(n))'
-
+    def _get_all_entity_names(tx):
+        query = 'MATCH (n:Entity) RETURN COLLECT(n.name)' 
+        
         result = tx.run(query)
         
-        for row in result: 
-            return row
+        for row in result: return row[0]
 
-#%% Get Attribute Node Informations:
+#%% Get Attributes of Specified Entity
 
-    def get_attribute_node_infos(self):
+    def get_attributes_of_entity(self, entity_name):
         with self.driver.session(database="neo4j") as session:
-            result = session.execute_read(self._get_attribute_node_infos)
+            result = session.execute_read(self._get_attributes_of_entity, entity_name)
             return result
         
     @staticmethod
-    def _get_attribute_node_infos(tx):
-        query = 'MATCH (n:Attribute) RETURN COLLECT(n.name), COLLECT(ID(n))'
+    def _get_attributes_of_entity(tx , entity_name):
+        query = "MATCH (n:Entity{name: $entity_name})<-[:COLUMNS_OF]-(m:Attribute) RETURN COLLECT(m.name)"
 
-        result = tx.run(query)
+        result = tx.run(query , entity_name = entity_name)
         
-        for row in result: return row
-
-#%% Get Columns Of Relation Informations:
-
-    def get_columns_of_relation_infos(self):
-        with self.driver.session(database="neo4j") as session:
-            result = session.execute_read(self._get_columns_of_relation_infos)
-            return result
-        
-    @staticmethod
-    def _get_columns_of_relation_infos(tx):
-        query = 'MATCH (n)-[m:COLUMNS_OF]->(k) RETURN COLLECT(n.name),COLLECT(k.name),COLLECT(ID(n)),COLLECT(ID(k)) '
-
-        result = tx.run(query)
-        
-        for row in result: return row 
-
-
+        for row in result: return row[0]
 
 
 

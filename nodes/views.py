@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 from BitirmeTeziSourceCode.queryOnMetadataModel import Services
 from .forms import find_path_algorithm,  redis_service_keyword_algorithm, referential_integrity_service_keyword_algorithm, metadata_model_algorithm
 
@@ -93,6 +94,8 @@ def graph_map_processing(request):
         items = service.get_all_nodes_infos()
         
     return render(request , "graph_map_processing.html", {'items':items})
+
+
 
 
 
